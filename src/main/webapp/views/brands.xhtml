@@ -10,96 +10,68 @@
 	<ui:define name="main-header">Brand List</ui:define>
 	<ui:define name="sub-header">Brands</ui:define>
 	<ui:define name="add-button">
-		<a href="#" class="col-1 d-none d-sm-inline-block btn btn btn-primary shadow-sm">
-		<i class="fas fa-plus fa-sm text-white-50"></i> Add </a>
+		<h:commandLink action="#{brandBean.getBrandInfo(0)}" onclick="$ ('#brandDialog').modal('show');" styleClass="col-1 d-none d-sm-inline-block btn btn btn-primary shadow-sm">				
+					<i class="fas fa-plus fa-sm text-white-50"></i> Add
+					<f:ajax render="editForm"></f:ajax>			
+	</h:commandLink>
 		
 	</ui:define>
 	<!--main content  -->
 	<ui:define name="main-content">
-		                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Brand Table</h6>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Position</th>
-                                            <th>Office</th>
-                                            <th>Age</th>
-                                            <th>Start date</th>
-                                            <th>Salary</th>
-                                        </tr>
-                                    </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Position</th>
-                                            <th>Office</th>
-                                            <th>Age</th>
-                                            <th>Start date</th>
-                                            <th>Salary</th>
-                                        </tr>
-                                    </tfoot>
-                                    <tbody>
-                                        <tr>
-                                            <td>Tiger Nixon</td>
-                                            <td>System Architect</td>
-                                            <td>Edinburgh</td>
-                                            <td>61</td>
-                                            <td>2011/04/25</td>
-                                            <td>$320,800</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Garrett Winters</td>
-                                            <td>Accountant</td>
-                                            <td>Tokyo</td>
-                                            <td>63</td>
-                                            <td>2011/07/25</td>
-                                            <td>$170,750</td>
-                                        </tr>
-                                         
-                                        <tr>
-                                            <td>Jenette Caldwell</td>
-                                            <td>Development Lead</td>
-                                            <td>New York</td>
-                                            <td>30</td>
-                                            <td>2011/09/03</td>
-                                            <td>$345,000</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Yuri Berry</td>
-                                            <td>Chief Marketing Officer (CMO)</td>
-                                            <td>New York</td>
-                                            <td>40</td>
-                                            <td>2009/06/25</td>
-                                            <td>$675,000</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Caesar Vance</td>
-                                            <td>Pre-Sales Support</td>
-                                            <td>New York</td>
-                                            <td>21</td>
-                                            <td>2011/12/12</td>
-                                            <td>$106,450</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Doris Wilder</td>
-                                            <td>Sales Assistant</td>
-                                            <td>Sidney</td>
-                                            <td>23</td>
-                                            <td>2010/09/20</td>
-                                            <td>$85,600</td>
-                                        </tr>
-                                           
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-		
+		     	<h:form>
+                 	<div class="row">
+                 	<ui:repeat var="b" value="#{brandBean.brands}">
+                 			<div class="col-3">
+                 		<div class="card mb-4">
+                 			<div class="card-body d-flex align-items-center justify-content-between">
+                 				<h3>#{b.name}</h3>
+                 	<h:commandLink  action="#{brandBean.getBrandInfo(b.id)}" onclick="$('#brandDialog').modal('show')">
+                 				<i class="fas fa-edit"></i>
+                 				<f:ajax render="editForm"></f:ajax>
+                 	</h:commandLink>
+                 			</div>
+                 			</div>
+                 		</div>
+                 	</ui:repeat>
+                 	
+                 	</div>
+        </h:form>                    	               	
+		<!-- category dialog -->
+		<div class="modal fade" id="brandDialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+				<h:form styleClass="form" id="editForm">
+					<div class="modal-header">
+						<h5 class="modal=title">
+				#{brandBean.brand.id == 0 ? 'Add Brand' : 'Edit Brand'}
+						</h5>
+						<button class="close" type="button"  data-dismiss="modal">
+							<span p:aria-hidden="true">X</span>
+						</button>
+					
+					</div>
+						
+					<div class="modal-body">
+						<div class="form-group">
+							<label>Brand</label>
+							<h:inputText validatorMessage="*Requried Name!" id="name" value="#{brandBean.brand.name}" styleClass="form-control" p:placeholder="Enter Brand Name">
+								<f:validateRequired></f:validateRequired>
+							</h:inputText>
+							<small>
+								<h:message for="name" styleClass="text-danger"/>
+							</small>
+						</div>
+					</div>
+					<div class="modal-footer">
+        			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        			<h:commandLink action="#{brandBean.save()}" styleClass="btn btn-primary">
+        			<i class="fas fa-save"></i> Save
+        			</h:commandLink>
+      					</div>
+				</h:form>
+				</div>
+			</div>
+		</div>
 	</ui:define>
 </ui:composition>
 </html>
